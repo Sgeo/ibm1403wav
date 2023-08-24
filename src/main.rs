@@ -1,4 +1,4 @@
-static CHAIN_CHARS_STR: &'static str = "1234567890#@/STUVWXYZ‡,%JKLMNOPQR-$*ABCDEFGHI+.¤";
+static CHAIN_CHARS_STR: &'static str = "1234567890#@/STUVWXYZ‡,%JKLMNOPQR-$*ABCDEFGHI+.⌑";
 static CHAIN_CHARS: once_cell::sync::Lazy<Vec<char>> = once_cell::sync::Lazy::new(|| {
     CHAIN_CHARS_STR.chars().collect()
 });
