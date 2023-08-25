@@ -11,7 +11,8 @@ struct Printer {
     active_chain_char: usize,
     subscan: usize,
     scan: usize,
-    time: usize
+    time: u64, // microseconds
+    cycles: usize
 }
 
 impl Printer {
@@ -20,10 +21,12 @@ impl Printer {
     }
 
     fn advance(&mut self) {
-        self.time += 1;
+        self.cycles += 1;
+        self.time += 11;
         self.active_hammer += 3;
         self.active_chain_char += 2;
         if self.active_hammer >= LINE_LENGTH {
+            self.time += 71; // 555 - 484, sync time
             self.subscan += 1;
             if self.subscan >= 3 {
                 self.subscan = 0;
@@ -50,7 +53,7 @@ impl Printer {
     }
 
     fn finished(&self) -> bool {
-        self.time >= LINE_LENGTH * CHAIN_CHARS.len()
+        self.cycles >= LINE_LENGTH * CHAIN_CHARS.len()
     }
 }
 
@@ -58,7 +61,7 @@ fn main() -> anyhow::Result<()> {
     let mut printer = Printer::new();
     for line in std::io::stdin().lines() {
         let line = line?;
-        let mut prior_time: usize = 0;
+        let mut prior_time: u64 = 0;
         while !printer.finished() {
             let result = printer.print(&line);
             if let Some(printed) = result {
