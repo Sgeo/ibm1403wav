@@ -17,7 +17,10 @@ struct Printer {
 
 impl Printer {
     fn new() -> Printer {
-        Printer::default()
+        Printer {
+            time: 0,
+            ..Printer::default()
+        }
     }
 
     fn advance(&mut self) {
@@ -26,9 +29,11 @@ impl Printer {
         self.active_hammer += 3;
         self.active_chain_char += 2;
         if self.active_hammer >= LINE_LENGTH {
+            eprintln!("Time before sync: {}", self.time);
             self.time += 71; // 555 - 484, sync time
             self.subscan += 1;
             if self.subscan >= 3 {
+                eprintln!("Next subscan!");
                 self.subscan = 0;
                 self.scan += 1;
             }
